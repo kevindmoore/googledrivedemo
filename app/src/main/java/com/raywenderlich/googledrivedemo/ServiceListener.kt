@@ -1,6 +1,5 @@
 package com.raywenderlich.googledrivedemo
 
-import com.google.android.gms.drive.DriveId
 import java.io.File
 
 /**
@@ -8,8 +7,7 @@ import java.io.File
  * files to display and will be notified that there was an error
  */
 interface ServiceListener {
-    fun currentFiles(currentPath : String, files : List<DriveId>)
-    fun fileDownloaded(file : File)
-    fun cancelled()
-    fun handleError(exception : Exception)
+  fun fileDownloaded(file: File)
+  fun cancelled()
+  fun handleError(exception: Exception)
 }
