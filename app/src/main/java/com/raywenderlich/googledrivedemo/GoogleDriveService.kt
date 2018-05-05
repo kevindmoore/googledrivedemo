@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Environment
 import android.support.v4.app.ActivityCompat
 import android.util.Log
-import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -68,9 +67,6 @@ class GoogleDriveService(val activity: Activity, val config: GoogleDriveConfig) 
               sink.close()
 
               serviceListener?.fileDownloaded(tempFile)
-              // Upload File
-              // Delete temp file
-//                            tempFile.delete()
             } catch (e: Exception) {
               Log.e(TAG, "Problems saving file", e)
             }
@@ -119,13 +115,12 @@ class GoogleDriveService(val activity: Activity, val config: GoogleDriveConfig) 
     }
   }
 
-
   /**
    * Prompts the user to select a text file using OpenFileActivity.
    *
    * @return Task that resolves with the selected item's ID.
    */
-  protected fun pickFiles(driveId: DriveId?) {
+  fun pickFiles(driveId: DriveId?) {
     val builder = OpenFileActivityOptions.Builder()
     if (config.mimeTypes != null) {
       builder.setMimeType(config.mimeTypes)
@@ -149,7 +144,6 @@ class GoogleDriveService(val activity: Activity, val config: GoogleDriveConfig) 
   private fun initializeDriveClient(signInAccount: GoogleSignInAccount) {
     driveClient = Drive.getDriveClient(activity.getApplicationContext(), signInAccount)
     driveResourceClient = Drive.getDriveResourceClient(activity.getApplicationContext(), signInAccount)
-    pickFiles(null)
   }
 
 
@@ -181,20 +175,11 @@ class GoogleDriveService(val activity: Activity, val config: GoogleDriveConfig) 
       } else {
         activity.startActivityForResult(googleSigninClient.signInIntent, REQUEST_CODE_SIGN_IN)
       }
-    } else {
-      pickFiles(null)
     }
   }
 
   fun logout() {
     googleSigninClient.signOut()
-  }
-
-  /**
-   * Shows a toast message.
-   */
-  protected fun showMessage(message: String) {
-    Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
   }
 
   companion object {
