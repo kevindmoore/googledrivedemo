@@ -14,7 +14,7 @@ import java.io.File
 
 
 /**
- * Copyright (c) 2017 Razeware LLC
+ * Copyright (c) 2018 Razeware LLC
  * Main Activity. Used to start Google Drive
  */
 class MainActivity : AppCompatActivity(), ServiceListener {
@@ -28,6 +28,24 @@ class MainActivity : AppCompatActivity(), ServiceListener {
   lateinit var logoutButton : Button
   lateinit var pickFilesButton : Button
   lateinit var statusView : TextView
+
+  fun setButtons() {
+    when (state) {
+      ButtonState.LOGGED_OUT -> {
+        statusView.text = getString(R.string.status_logged_out)
+        pickFilesButton.isEnabled = false
+        logoutButton.isEnabled = false
+        loginButton.isEnabled = true
+      }
+      else -> {
+        statusView.text = getString(R.string.status_logged_in)
+        pickFilesButton.isEnabled = true
+        logoutButton.isEnabled = true
+        loginButton.isEnabled = false
+
+      }
+    }
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -54,23 +72,6 @@ class MainActivity : AppCompatActivity(), ServiceListener {
     setButtons()
   }
 
-  fun setButtons() {
-    when (state) {
-      ButtonState.LOGGED_OUT -> {
-        statusView.text = getString(R.string.status_logged_out)
-        pickFilesButton.isEnabled = false
-        logoutButton.isEnabled = false
-        loginButton.isEnabled = true
-      }
-      else -> {
-        statusView.text = getString(R.string.status_logged_in)
-        pickFilesButton.isEnabled = true
-        logoutButton.isEnabled = true
-        loginButton.isEnabled = false
-
-      }
-    }
-  }
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     googleDriveService.onActivityResult(requestCode, resultCode, data)
   }

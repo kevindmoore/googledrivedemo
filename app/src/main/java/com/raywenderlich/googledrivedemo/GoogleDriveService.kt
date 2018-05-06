@@ -16,6 +16,7 @@ import java.io.File
 import java.util.*
 
 /**
+ * Copyright (c) 2018 Razeware LLC
  * Handle Google Drive sign-in and file picking
  */
 class GoogleDriveService(val activity: Activity, val config: GoogleDriveConfig) {
@@ -53,8 +54,7 @@ class GoogleDriveService(val activity: Activity, val config: GoogleDriveConfig) 
           fileName = it.originalFilename
         }
     val openFileTask = driveResourceClient?.openFile(drive, DriveFile.MODE_READ_ONLY)
-    openFileTask
-        ?.continueWithTask({ task ->
+    openFileTask?.continueWithTask({ task ->
           val contents = task.getResult()
           contents.getInputStream().use {
             try {
@@ -106,7 +106,7 @@ class GoogleDriveService(val activity: Activity, val config: GoogleDriveConfig) 
    * @param openOptions Filter that should be applied to the selection
    * @return Task that resolves with the selected item's ID.
    */
-  private fun pickItem(openOptions: OpenFileActivityOptions) { // : Task<DriveId>? {
+  private fun pickItem(openOptions: OpenFileActivityOptions) {
     val openTask = driveClient?.newOpenFileActivityIntentSender(openOptions)
     openTask?.let {
       openTask.continueWith { task ->
